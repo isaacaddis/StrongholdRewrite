@@ -9,17 +9,17 @@ import edu.wpi.first.wpilibj.Joystick;
 
 public class Drive {
 
-	private Joystick m_leftJoy = HardwareAdapter.driveJoyLeft;
-	private Joystick m_rightJoy = HardwareAdapter.driveJoyRight;
-	private Gearbox m_gearLeft = HardwareAdapter.DriveLeftGearbox;
-	private Gearbox m_gearRight = HardwareAdapter.DriveRightGearbox;
-	private Encoder m_leftDriveEncode = HardwareAdapter.leftDriveEncode;
-	private Encoder m_rightDriveEncode = HardwareAdapter.rightDriveEncode;
-	private double leftY, rightY;
+	private static Joystick m_leftJoy = HardwareAdapter.driveJoyLeft;
+	private static Joystick m_rightJoy = HardwareAdapter.driveJoyRight;
+	private static Gearbox m_gearLeft = HardwareAdapter.DriveLeftGearbox;
+	private static Gearbox m_gearRight = HardwareAdapter.DriveRightGearbox;
+	private static Encoder m_leftDriveEncode = HardwareAdapter.leftDriveEncode;
+	private static Encoder m_rightDriveEncode = HardwareAdapter.rightDriveEncode;
+	private static double leftY, rightY;
 	/*
 	 * @description Tank Drive!	
 	 */
-	public void drive()
+	public static void drive()
 	{
 		leftY = m_leftJoy.getY();
 		rightY = m_rightJoy.getY();
@@ -48,7 +48,7 @@ public class Drive {
 		m_rightDriveEncode.reset();
 		m_leftDriveEncode.reset();
 	}
-	public double clamp(double input){
+	public static double clamp(double input){
 		if(input>1)
 			return 1;
 		else if(input<1)
