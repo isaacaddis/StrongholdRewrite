@@ -9,12 +9,13 @@ import edu.wpi.first.wpilibj.Timer;
 
 public class DriveStraightAction {
 	
-	private Gearbox m_leftGearbox = HardwareAdapter.DriveLeftGearbox;
-	private Gearbox m_rightGearbox = HardwareAdapter.DriveRightGearbox;
-	private AHRS m_nav = HardwareAdapter.NavX;
-	double totalError, error;
+	private static Gearbox m_leftGearbox = HardwareAdapter.DriveLeftGearbox;
+	private static Gearbox m_rightGearbox = HardwareAdapter.DriveRightGearbox;
+	private static AHRS m_nav = HardwareAdapter.NavX;
+	static double totalError;
+	static double error;
 	
-	public void driveStraight(double maxPow){
+	public static void driveStraight(double maxPow){
 
 		totalError = 0;
 		error = m_nav.getAngle() % 360;		

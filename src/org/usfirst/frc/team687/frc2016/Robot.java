@@ -1,7 +1,11 @@
 
 package org.usfirst.frc.team687.frc2016;
 
+import org.usfirst.frc.team687.frc2016.subsystems.Intake;
+
+import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -17,7 +21,9 @@ public class Robot extends IterativeRobot {
     final String customAuto = "My Auto";
     String autoSelected;
     SendableChooser chooser;
-	
+    CANTalon intakeRollers = HardwareAdapter.intakeRollers;
+    CANTalon intakeAngle = HardwareAdapter.intakeAngle;
+    Joystick articJoy = HardwareAdapter.articJoy;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -55,10 +61,9 @@ public class Robot extends IterativeRobot {
     	}
     }
     public void teleopPeriodic() {
-        
-    }
-    public void testPeriodic() {
-    
+    	Intake.control(intakeRollers, intakeAngle, articJoy);
+    		
+    	
     }
     public void disabledInit(){
     	Systems.stop();

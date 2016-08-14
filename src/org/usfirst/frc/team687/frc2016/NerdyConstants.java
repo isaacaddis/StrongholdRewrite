@@ -1,7 +1,9 @@
 package org.usfirst.frc.team687.frc2016;
-
+/*
+ * @author tedfoodlin 
+ * seriously lol thanks
+ */
 public class NerdyConstants {
-
 	public final static double kDriveRotationP		= 0.04444444;
 	public final static double kDriveRotationI		= 0.00044444;
 	public final static double kDriveMaxAccel		= 1.5;
@@ -46,9 +48,14 @@ public class NerdyConstants {
 	public final static double kIntakeTucked		= 0.575;
 	public final static double kIntakeGround		= 0.421;
 	
+	//buttons (added for more organization in this project)
 	public final static int intakeBallAngleButton 		 		= 1;
 	public final static int intakeTuckButton 		   		    = 2;
 	public final static int intakeRestButton				    = 3;
+	
+	public final static int intakeAngleDownButton = 1;
+	public final static int intakeAngleUpButton = 2;
+	
 	public final static int intakeRollersButton 			    = 4;
 	public final static int intakeRollersReverseButton		    = 5;
 	
@@ -59,5 +66,4 @@ public class NerdyConstants {
 	public final static int shootBatterButton 					= 9;
 	public final static int shootOuterWorksButton				= 11;
 	public final static int shootLowGoalButton 					= 12;
-	
 }
