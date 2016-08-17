@@ -48,7 +48,6 @@ public class NerdyConstants {
 	public final static double kIntakeTucked		= 0.575;
 	public final static double kIntakeGround		= 0.421;
 	
-	//buttons (added for more organization in this project)
 	public final static int intakeBallAngleButton 		 		= 1;
 	public final static int intakeTuckButton 		   		    = 2;
 	public final static int intakeRestButton				    = 3;
