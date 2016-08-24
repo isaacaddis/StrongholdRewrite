@@ -3,6 +3,7 @@ package org.usfirst.frc.team687.frc2016.subsystems;
 import org.usfirst.frc.team687.frc2016.NerdyConstants;
 
 import edu.wpi.first.wpilibj.CANTalon;
+import edu.wpi.first.wpilibj.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick;
@@ -44,6 +45,35 @@ public class Shooter {
 			buttonStuff();
 			m_error = determineError((m_articJoy.getThrottle()+1)/2);
 			setAngle(m_error);
+		}
+	}
+	/*
+	 * Bang bang
+	 */
+	public void shoot()
+	{
+		double throttleRaw = (m_articJoy.getThrottle() + 1)/2;
+		
+		timedShooterEncoderReset();
+			
+		//push
+		if (m_articJoy.getRawButton(NerdyConstants.shooterPunchButton)){
+			m_shooterSol.set(DoubleSolenoid.Value.kForward);
+		}
+		//shoot (minus all complicated physics formulas)
+		if (m_articJoy.getRawButton(NerdyConstants.shootOuterWorksButton)){
+			bangBang(4000 * throttleRaw);
+		}
+
+	}
+	public void bangBang(double desired)
+	{
+		double rightRate = m_rightEncode.getRate();
+		double leftRate = m_leftEncode.getRate();
+		
+		if (rightRate < (desired + 2) && leftRate < (desired + 2)){
+			m_rightShoot.set(1);
+			m_leftShoot.set(1);
 		}
 	}
 	/*
@@ -90,16 +120,36 @@ public class Shooter {
 	/*
 	 * Could not think of a good name. Created to avoid repeat code
 	 */
-	public void buttonStuff(){
+	public void buttonStuff()
+	{
+		m_lifter.changeControlMode(TalonControlMode.Position);
 		if (m_articJoy.getRawButton(NerdyConstants.shooterAngleBatterShotButton)){
 			m_desired = m_batterAngle; // 0.86
-			m_actual = m_actual*(1-m_lifterAlpha) + m_desired*m_lifterAlpha; 
+			lowPassFilter();
 			m_lifter.set(m_actual);
 		}
 		if (m_articJoy.getRawButton(NerdyConstants.shooterAngleOuterworksShotButton)){
 			m_desired = m_outerWorksAngle; // 0.86
-			m_actual= m_actual*(1-m_lifterAlpha) + m_desired*m_lifterAlpha; 
+			lowPassFilter();
 			m_lifter.set(m_actual);
 		}	
+	}
+	private double lowPassFilter()
+	{
+					m_actual = m_actual*(1-m_lifterAlpha) + m_desired*m_lifterAlpha; 
+					return m_actual;
+	}
+	/*
+	 * @author: Ted
+	 */
+	protected void timedShooterEncoderReset()
+	{
+		if (!m_articJoy.getRawButton(NerdyConstants.shootOuterWorksButton) && !m_articJoy.getRawButton(NerdyConstants.shootBatterButton) 
+				&& !m_articJoy.getRawButton(NerdyConstants.shootLowGoalButton)){
+			if (m_leftEncode.getStopped() && m_rightEncode.getStopped()){
+				m_leftEncode.reset();
+				m_rightEncode.reset();
+			}
+		}
 	}
 }
