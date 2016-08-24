@@ -3,6 +3,7 @@ package org.usfirst.frc.team687.frc2016;
 
 import org.usfirst.frc.team687.frc2016.subsystems.Drive;
 import org.usfirst.frc.team687.frc2016.subsystems.Intake;
+import org.usfirst.frc.team687.frc2016.subsystems.Shooter;
 
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -45,7 +46,9 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
     	Intake.control(intakeRollers, intakeAngle, articJoy);
     	Drive.drive();	
-//    	TODO: Shooter
+    	Shooter.shoot();
+    	Shooter.changeAngle("BUTTON");
+    	
     }
     public void disabledInit(){
     	Systems.stop();

@@ -13,14 +13,20 @@ import edu.wpi.first.wpilibj.Joystick;
  * TODO: Take-Back-Half Control
  */
 public class Shooter {
-	private CANTalon m_leftShoot, m_rightShoot, m_lifter;
-	private DoubleSolenoid m_shooterSol;
-	private double m_actual, m_desired, m_error;
-	private Joystick m_articJoy;
-	private Encoder m_angleEncode, m_leftEncode, m_rightEncode;
-	private double m_outerWorksAngle = NerdyConstants.kOuterWorksAngle;
-	private double m_batterAngle = NerdyConstants.kOuterWorksAngle;
-	private double m_lifterAlpha = NerdyConstants.kLiftAlpha;
+	private static CANTalon m_leftShoot;
+	private static CANTalon m_rightShoot;
+	private static CANTalon m_lifter;
+	private static DoubleSolenoid m_shooterSol;
+	private static double m_actual;
+	private static double m_desired;
+	private static double m_error;
+	private static Joystick m_articJoy;
+	private static Encoder m_angleEncode;
+	private static Encoder m_leftEncode;
+	private static Encoder m_rightEncode;
+	private static double m_outerWorksAngle = NerdyConstants.kOuterWorksAngle;
+	private static double m_batterAngle = NerdyConstants.kOuterWorksAngle;
+	private static double m_lifterAlpha = NerdyConstants.kLiftAlpha;
 	public Shooter(CANTalon leftShooter, CANTalon rightShooter, CANTalon lifter, DoubleSolenoid shooterKick, Joystick articJoy, Encoder lifterEncode, Encoder leftEncode, Encoder rightEncode){
 		m_leftShoot = leftShooter;
 		m_rightShoot = rightShooter;
@@ -35,7 +41,7 @@ public class Shooter {
 	 * Controls m_lifter based on the parameter provided. 
 	 * TODO: Create a switch/case instead of if/else???
 	 */
-	public void changeAngle(String type){
+	public static void changeAngle(String type){
 		if(type=="BUTTON"){
 			buttonStuff();
 			m_error = determineError(m_articJoy.getY());
@@ -50,7 +56,7 @@ public class Shooter {
 	/*
 	 * Bang bang
 	 */
-	public void shoot()
+	public static void shoot()
 	{
 		double throttleRaw = (m_articJoy.getThrottle() + 1)/2;
 		
@@ -66,11 +72,11 @@ public class Shooter {
 		}
 
 	}
-	public void bangBang(double desired)
+	public static void bangBang(double desired)
 	{
 		double rightRate = m_rightEncode.getRate();
 		double leftRate = m_leftEncode.getRate();
-		
+
 		if (rightRate < (desired + 2) && leftRate < (desired + 2)){
 			m_rightShoot.set(1);
 			m_leftShoot.set(1);
@@ -79,7 +85,7 @@ public class Shooter {
 	/*
 	 * Does what it says. Finds actual value at a given point and applies the formula desired-actual to return error.
 	 */
-	public double determineError(double desired){
+	public static double determineError(double desired){
 		double actual = m_angleEncode.get() - angleEncoderNegation();
 		return desired - actual;
 	}
@@ -87,7 +93,7 @@ public class Shooter {
 	 * @author: Ted
 	 * Thanks
 	 */
-	protected double angleEncoderNegation(){
+	protected static double angleEncoderNegation(){
 		double previousEncoderVal = m_angleEncode.get();
 		if (m_angleEncode.getDirection()){
 			m_angleEncode.reset();
@@ -98,7 +104,7 @@ public class Shooter {
 	/*
 	 * @TODO: Smarter outputting****
 	 */
-	public void setAngle(double error){
+	public static void setAngle(double error){
 		if (error < 0.1) {
 			if(error<0.05){
 				m_lifter.set(-0.1);
@@ -120,7 +126,7 @@ public class Shooter {
 	/*
 	 * Could not think of a good name. Created to avoid repeat code
 	 */
-	public void buttonStuff()
+	public static void buttonStuff()
 	{
 		m_lifter.changeControlMode(TalonControlMode.Position);
 		if (m_articJoy.getRawButton(NerdyConstants.shooterAngleBatterShotButton)){
@@ -134,7 +140,7 @@ public class Shooter {
 			m_lifter.set(m_actual);
 		}	
 	}
-	private double lowPassFilter()
+	private static double lowPassFilter()
 	{
 					m_actual = m_actual*(1-m_lifterAlpha) + m_desired*m_lifterAlpha; 
 					return m_actual;
@@ -142,7 +148,7 @@ public class Shooter {
 	/*
 	 * @author: Ted
 	 */
-	protected void timedShooterEncoderReset()
+	protected static void timedShooterEncoderReset()
 	{
 		if (!m_articJoy.getRawButton(NerdyConstants.shootOuterWorksButton) && !m_articJoy.getRawButton(NerdyConstants.shootBatterButton) 
 				&& !m_articJoy.getRawButton(NerdyConstants.shootLowGoalButton)){
